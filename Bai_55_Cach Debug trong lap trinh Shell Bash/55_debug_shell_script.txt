@@ -1,0 +1,40 @@
+#!/bin/bash 
+
+# bo sung -xv sau /bin/bash de debug toan bo chuong trinh
+
+# Khai bao file
+file_input="$1"
+file_output="$2"
+
+#Kiem tra file input co ton tai hay khong
+if [ ! -f "$file_input" ]; then
+	echo "File input khong ton tai."
+	exit
+fi
+
+# Doc mang tu file
+read -r -a arr < "$file_input"
+
+# Lay so luong
+n=${#arr[@]}
+
+# Bat debug
+set -xv 
+
+# Sap xep mang tang dan
+for ((i = 0; i < n-1; i++)); do
+	for ((j = i+1; j < n; j++)); do
+		if [ ${arr[j]} -lt ${arr[i]} ]; then
+			temp=${arr[j]}
+			arr[j]=${arr[i]}
+			arr[i]=$temp
+		fi
+	done
+done
+
+# tat debug
+set +xv
+
+# Xuat ket qua
+echo "${arr[@]}" > "$file_output"
+
